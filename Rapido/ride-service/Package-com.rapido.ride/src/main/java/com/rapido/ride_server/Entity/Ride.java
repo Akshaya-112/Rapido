@@ -23,8 +23,28 @@ public class Ride {
     private Double pickupLatitude;
     private Double pickupLongitude;
 
-    private Double distance;
-    private Double fare;
+    
+    private Double dropLatitude;
+    private Double dropLongitude;
+    
+    public Double getDropLatitude() {
+		return dropLatitude;
+	}
+
+	public void setDropLatitude(Double dropLatitude) {
+		this.dropLatitude = dropLatitude;
+	}
+
+	public Double getDropLongitude() {
+		return dropLongitude;
+	}
+
+	public void setDropLongitude(Double dropLongitude) {
+		this.dropLongitude = dropLongitude;
+	}
+
+	private Long distance;
+    private Long fare;
 
     private String status;
     private LocalDateTime createdAt;
@@ -88,19 +108,19 @@ public class Ride {
         this.pickupLongitude = pickupLongitude;
     }
 
-    public Double getDistance() {
+    public Long getDistance() {
         return distance;
     }
 
-    public void setDistance(Double distance) {
+    public void setDistance(Long distance) {
         this.distance = distance;
     }
 
-    public Double getFare() {
+    public Long getFare() {
         return fare;
     }
 
-    public void setFare(Double fare) {
+    public void setFare(Long fare) {
         this.fare = fare;
     }
 
@@ -119,4 +139,6 @@ public class Ride {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+	
 }
