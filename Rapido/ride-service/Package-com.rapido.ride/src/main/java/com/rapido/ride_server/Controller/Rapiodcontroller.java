@@ -19,7 +19,7 @@ import com.rapido.ride_server.Service.Rideservice;
 @RestController
 public class Rapiodcontroller {
 
-	
+
 	@Autowired
     private  Rideservice rideService;
     private  CaptainClient captainClient;
