@@ -1,8 +1,12 @@
+
+
 package com.rapido.ride_server.Service;
 
 import java.time.LocalDateTime;
+
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rapido.ride_server.Client.CaptainClient;
@@ -12,31 +16,51 @@ import com.rapido.ride_server.Repository.Riderepository;
 @Service
 public class Rideservice {
 
-    private final Riderepository rideRepository;
-    private final CaptainClient captainClient;
+	
+		@Autowired
+    private Riderepository rideRepository;
+    private  CaptainClient captainClient;
 
-    public Rideservice(
-            Riderepository rideRepository,
-            CaptainClient captainClient) {
-
-        this.rideRepository = rideRepository;
-        this.captainClient = captainClient;
-    }
+   
 
     // User books a ride
-    public Ride createRide(Ride ride) {
+   
+ public Ride createRide(Ride ride) {
 
-        // Captain is not assigned immediately
-        ride.setCaptainId(null);
+            // Calculate distance
+            long distance = Math.round(calculateDistance(
+                    ride.getPickupLatitude(),
+                    ride.getPickupLongitude(),
+                    ride.getDropLatitude(),
+                    ride.getDropLongitude()
+            ));
 
-        // Initial ride status
-        ride.setStatus("REQUESTED");
+            ride.setDistance(distance);
 
-        // Booking time
-        ride.setCreatedAt(LocalDateTime.now());
+            // Calculate fare
+            long fare = distance * 15;
+            ride.setFare(fare);
 
-        return rideRepository.save(ride);
-    }
+            // Set ride details
+            ride.setStatus("REQUESTED");
+            ride.setCreatedAt(LocalDateTime.now());
+
+            return rideRepository.save(ride);
+        }
+
+        // Calculate distance
+        private double calculateDistance(
+                double lat1, double lon1,
+                double lat2, double lon2) {
+
+            double lat = lat2 - lat1;
+            double lon = lon2 - lon1;
+
+            return Math.sqrt(lat * lat + lon * lon) * 111;
+        }
+    
+
+    
 
     // Captain accepts the ride
     public Ride acceptRide(Long rideId, Long captainId) {
